@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Pinspire — Discover ideas</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <aside class="sidebar">
+    <a class="brand" href="#home" aria-label="Pinspire home"><span class="brand-mark">P</span><span>Pinspire</span></a>
+    <nav class="main-nav">
+      <a class="nav-link active" href="#home" data-view="home"><span class="nav-icon">⌂</span>Home</a>
+      <a class="nav-link" href="#explore" data-view="explore"><span class="nav-icon">✧</span>Explore</a>
+      <a class="nav-link" href="#following" data-view="following"><span class="nav-icon">♡</span>Following</a>
+      <a class="nav-link" href="#saved" data-view="saved"><span class="nav-icon">▣</span>Saved</a>
+    </nav>
+    <div class="side-divider"></div>
+    <div class="side-heading">YOUR SPACE</div>
+    <button class="side-action" id="createBoardBtn"><span>＋</span> Create a board</button>
+    <div class="board-list" id="sidebarBoards"></div>
+    <div class="sidebar-bottom" id="sidebarProfile" role="button" tabindex="0" title="Open your profile"><div class="avatar avatar-me">K</div><div><strong>Kasturi</strong><small>Your profile</small></div><button class="more-btn" aria-label="More" type="button">···</button></div>
+  </aside>
+
+  <main class="main-area">
+    <header class="topbar">
+      <div class="search-wrap"><span class="search-icon">⌕</span><input id="searchInput" type="search" placeholder="Search for ideas, inspiration and more" autocomplete="off"><button id="clearSearch" class="clear-search" aria-label="Clear search">×</button><div class="suggestions" id="suggestions"></div></div>
+      <button class="profile-button" id="topProfileButton" title="Your profile" type="button"><span class="avatar avatar-me">K</span><span class="chevron">⌄</span></button>
+    </header>
+
+    <section class="welcome-row" id="welcomeRow"><div><p class="eyebrow">YOUR DAILY DOSE OF INSPIRATION</p><h1 id="pageTitle">Find your next big idea</h1><p class="subtitle" id="pageSubtitle">Ideas worth saving, all in one place.</p></div><button class="create-pin-btn" id="createPinBtn"><span>＋</span> Create Pin</button></section>
+    <div class="category-row" id="categories">
+      <button class="chip selected" data-category="All">For you</button><button class="chip" data-category="Interior">Interior</button><button class="chip" data-category="Fashion">Fashion</button><button class="chip" data-category="Food">Food</button><button class="chip" data-category="Travel">Travel</button><button class="chip" data-category="Art">Art</button><button class="chip" data-category="DIY">DIY & Crafts</button>
+    </div>
+    <div class="feed-heading"><span id="feedLabel">Picked for you</span><span class="result-count" id="resultCount"></span></div>
+    <section class="masonry" id="pinGrid" aria-live="polite"></section>
+    <div class="empty-state hidden" id="emptyState"><div class="empty-icon">⌕</div><h2>No ideas found</h2><p>Try another search or explore a different category.</p><button class="text-button" id="resetFeed">Show all ideas</button></div>
+    <footer>Made for collecting the ideas that inspire you <span>♥</span></footer>
+  </main>
+
+  <div class="toast" id="toast" role="status"></div>
+
+  <div class="modal-backdrop" id="pinModalBackdrop">
+    <div class="modal pin-modal"><button class="modal-close" data-close="pinModalBackdrop">×</button><div class="modal-title"><p class="eyebrow">SHARE YOUR INSPIRATION</p><h2>Create a Pin</h2></div>
+      <form id="pinForm"><label class="upload-area" for="pinImage"><span class="upload-symbol">＋</span><strong>Choose an image</strong><small>Paste an image URL below or choose a file</small><input type="file" id="pinImage" accept="image/*"></label><label>Image URL<input id="pinImageUrl" type="url" placeholder="https://example.com/image.jpg"></label><label>Title<input id="pinTitle" required maxlength="70" placeholder="Give your Pin a title"></label><label>Description<textarea id="pinDescription" rows="3" placeholder="Tell everyone what makes this idea special"></textarea></label><div class="form-row"><label>Category<select id="pinCategory"><option>Interior</option><option>Fashion</option><option>Food</option><option>Travel</option><option>Art</option><option>DIY</option><option>Nature</option></select></label><label>Save to<select id="pinBoard"></select></label></div><button class="primary-btn" type="submit">Publish Pin</button></form>
+    </div>
+  </div>
+
+  <div class="modal-backdrop" id="boardModalBackdrop"><div class="modal small-modal"><button class="modal-close" data-close="boardModalBackdrop">×</button><p class="eyebrow">ORGANISE YOUR IDEAS</p><h2>Create a board</h2><form id="boardForm"><label>Board name<input id="boardName" required maxlength="35" placeholder="e.g. Dream home"></label><label>Privacy<select id="boardPrivacy"><option>Secret</option><option>Public</option></select></label><button class="primary-btn" type="submit">Create board</button></form></div></div>
+
+  <div class="modal-backdrop" id="saveModalBackdrop"><div class="modal small-modal"><button class="modal-close" data-close="saveModalBackdrop">×</button><p class="eyebrow">KEEP THE IDEAS YOU LOVE</p><h2>Save to a board</h2><p class="modal-muted" id="savePinName"></p><div class="board-picker" id="boardPicker"></div><button class="primary-btn" id="confirmSave">Save Pin</button><button class="secondary-btn" id="removeSavedPin" type="button" hidden>Remove from board</button></div></div>
+
+  <div class="modal-backdrop" id="profileModalBackdrop"><div class="modal small-modal profile-modal"><button class="modal-close" data-close="profileModalBackdrop">×</button><div class="profile-cover"></div><div class="avatar profile-large" id="profileAvatar">A</div><h2 id="profileName">Creator</h2><p id="profileBio" class="modal-muted"></p><div class="profile-stats"><span><strong id="profilePins">0</strong> Pins</span><span><strong id="profileFollowers">0</strong> Followers</span></div><button class="primary-btn" id="profileFollowBtn">Follow</button></div></div>
+
+  <script src="script.js"></script>
+</body>
+</html>
